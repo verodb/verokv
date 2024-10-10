@@ -10,12 +10,12 @@ Instructions to build the project from source.
 git clone https://github.com/verodb/verokv && cd verokv 
 
 # cd into the repository
-cd redis-kw
+cd verokv
 
-# build the redis server (rediskw)
+# build the server (verokv)
 make
 
-# build the redis client (rediskw-cli)
+# build the the client (verokv-cli)
 make client
 
 # run the unit tests
@@ -23,7 +23,7 @@ make test
 ```
 
 ## Usage
-`rediskw` is the server's executable, while `rediskw-cli` is the client's. You
+`verokv` is the server's executable, while `verokv-cli` is the client's. You
 can run them separately or use the utility script `connect.sh` to run both at
 once (useful when developing).
 ```bash
