@@ -1,0 +1,4 @@
+*.out
+tests/__pycache__
+OLD
+/verokv*

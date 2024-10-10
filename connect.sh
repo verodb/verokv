@@ -1,0 +1,2 @@
+./verokv &
+./verokv-cli
