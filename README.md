@@ -1,19 +1,13 @@
-# redis-kw
-Clone of Redis (server & client), written in C, that supports a subset of the 
-features in the original Redis. My attempt at #42SkillsChallenge no.9: In-memory
-Database.
+# VeroKV / oss
 
-![Screeenshot of the client program](/screenshot.png)
+VeroKV is a key-value based in-memory database created by VeroDB. We support all the redis commands on this databse. Although we allow users to self host the project. It is not fully built yet so we don't recommend it. 
 
-## Built with
-
-![C](https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white)
 
 ## Build Instructions
 Instructions to build the project from source.
 ```bash
 # clone this repository
-git clone https://github.com/rmrt1n/redis-kw.git && cd redis-kw
+git clone https://github.com/verodb/verokv && cd verokv 
 
 # cd into the repository
 cd redis-kw
@@ -37,10 +31,10 @@ once (useful when developing).
 chmod +x connect.sh && ./connect.sh
 
 # run the server
-./rediskw
+./verokv
 
 # run the client
-./rediskw-cli
+./verokv-cli
 ```
 
 ## Commands supported
