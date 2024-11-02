@@ -6,12 +6,14 @@
 #include "common.h"
 
 #define SNAPSHOT_FILE "snapshot.dat"
-#define SNAPSHOT_INTERVAL 10 
+#define SNAPSHOT_INTERVAL 3
+#define ENABLE_SNAPSHOTS 1
 
 static HashTable *global_ht; 
 static int server_running = 1;
 
 static int save_snapshot(HashTable *ht, const char *filename) {
+#if ENABLE_SNAPSHOTS
     FILE *file = fopen(filename, "wb");
     if (!file) {
         perror("Failed to open file for snapshot");
@@ -32,11 +34,13 @@ static int save_snapshot(HashTable *ht, const char *filename) {
     }
 
     fclose(file);
+#endif
     return 0;
 }
 
 // Function to load the hash table state from a snapshot file
 static int load_snapshot(HashTable *ht, const char *filename) {
+#if ENABLE_SNAPSHOTS
     FILE *file = fopen(filename, "rb");
     if (!file) {
         perror("Snapshot file not found or cannot be opened");
@@ -65,25 +69,30 @@ static int load_snapshot(HashTable *ht, const char *filename) {
     }
 
     fclose(file);
+#endif
     return 0;
 }
 
 // Snapshot thread function
 void *snapshot_thread(void *arg) {
+#if ENABLE_SNAPSHOTS
     while (server_running) {
         sleep(SNAPSHOT_INTERVAL);
         if (server_running) {
             save_snapshot(global_ht, SNAPSHOT_FILE);
         }
     }
+#endif
     return NULL;
 }
 
 // Function to close the server, saving the snapshot first
 static void close_server(int sfd, HashTable *ht) {
+#if ENABLE_SNAPSHOTS
     server_running = 0; 
     pthread_join(*(pthread_t *)ht, NULL); 
     save_snapshot(ht, SNAPSHOT_FILE);
+#endif
     close_socket(sfd);
     htable_free(ht);
     exit(0);
@@ -95,13 +104,17 @@ int main() {
     global_ht = ht;  // Set global reference for the snapshot thread
 
     // Load snapshot if available
+#if ENABLE_SNAPSHOTS
     if (load_snapshot(ht, SNAPSHOT_FILE) == 0) {
         printf("Snapshot loaded successfully.\n");
     }
+#endif
 
     // Start snapshot thread
+#if ENABLE_SNAPSHOTS
     pthread_t snapshot_tid;
     pthread_create(&snapshot_tid, NULL, snapshot_thread, NULL);
+#endif
 
     int sfd = init_server();
     while (1) {
