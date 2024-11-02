@@ -1,6 +1,6 @@
 # VeroKV / oss
 
-VeroKV is a key-value based in-memory database created by VeroDB. We support all the redis commands on this databse. Although we allow users to self host the project. It is not fully built yet so we don't recommend it. 
+VeroKV is a key-value based in-memory database created by VeroDB. We support all the redis commands on this databse. Although we allow users to self host the project. It is meant for research purposes only and not production. 
 
 
 ## Build Instructions
