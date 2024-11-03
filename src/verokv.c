@@ -3,17 +3,28 @@
 #include <string.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <sys/time.h>
 #include "common.h"
 
 #define SNAPSHOT_FILE "snapshot.dat"
 #define SNAPSHOT_INTERVAL 3
-#define ENABLE_SNAPSHOTS 0
+#define ENABLE_SNAPSHOTS 1
 
 static HashTable *global_ht; 
 static int server_running = 1;
 
+// Function to calculate elapsed time in microseconds
+static long calculate_elapsed_time(struct timeval start, struct timeval end) {
+    long seconds = end.tv_sec - start.tv_sec;
+    long microseconds = end.tv_usec - start.tv_usec;
+    return (seconds * 1000000) + microseconds; // Return in microseconds
+}
+
 static int save_snapshot(HashTable *ht, const char *filename) {
 #if ENABLE_SNAPSHOTS
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
+
     FILE *file = fopen(filename, "wb");
     if (!file) {
         perror("Failed to open file for snapshot");
@@ -34,6 +45,9 @@ static int save_snapshot(HashTable *ht, const char *filename) {
     }
 
     fclose(file);
+    gettimeofday(&end, NULL);
+    long microseconds = calculate_elapsed_time(start, end);
+    printf("Snapshot saved in %ld microseconds.\n", microseconds);
 #endif
     return 0;
 }
@@ -41,6 +55,9 @@ static int save_snapshot(HashTable *ht, const char *filename) {
 // Function to load the hash table state from a snapshot file
 static int load_snapshot(HashTable *ht, const char *filename) {
 #if ENABLE_SNAPSHOTS
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
+
     FILE *file = fopen(filename, "rb");
     if (!file) {
         perror("Snapshot file not found or cannot be opened");
@@ -69,6 +86,9 @@ static int load_snapshot(HashTable *ht, const char *filename) {
     }
 
     fclose(file);
+    gettimeofday(&end, NULL);
+    long microseconds = calculate_elapsed_time(start, end);
+    printf("Snapshot loaded in %ld microseconds.\n", microseconds);
 #endif
     return 0;
 }
@@ -119,7 +139,15 @@ int main() {
     int sfd = init_server();
     while (1) {
         int cfd = accept_connection(sfd);
+        struct timeval start, end;
+        gettimeofday(&start, NULL);
+        
         int code = verokv(cfd, ht);
+        
+        gettimeofday(&end, NULL);
+        long microseconds = calculate_elapsed_time(start, end);
+        printf("Connection handled in %ld microseconds.\n", microseconds);
+
         code == 1 ? close_server(sfd, ht) : close_socket(cfd);
     }
 
