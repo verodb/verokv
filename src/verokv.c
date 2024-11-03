@@ -7,7 +7,7 @@
 
 #define SNAPSHOT_FILE "snapshot.dat"
 #define SNAPSHOT_INTERVAL 3
-#define ENABLE_SNAPSHOTS 1
+#define ENABLE_SNAPSHOTS 0
 
 static HashTable *global_ht; 
 static int server_running = 1;
