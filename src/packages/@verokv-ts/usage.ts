@@ -1,4 +1,4 @@
-import Verokv from './Verokv';
+import { Verokv } from 'verokv-ts';
 
 const host = '127.0.0.1';
 const port = 6381;

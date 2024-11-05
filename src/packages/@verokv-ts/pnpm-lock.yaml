@@ -11,6 +11,9 @@ importers:
       net:
         specifier: ^1.0.2
         version: 1.0.2
+      verokv-ts:
+        specifier: ^1.0.2
+        version: 1.0.2
     devDependencies:
       '@types/node':
         specifier: ^22.8.7
@@ -35,6 +38,9 @@ packages:
   undici-types@6.19.8:
     resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
 
+  verokv-ts@1.0.2:
+    resolution: {integrity: sha512-x1PJIOQ5N2XrPemdIu7CQfh2BXY1oeOF1kgZS4ZFUcaBvWrGojktSad8dpithweWVBQ+HpjSNUOPIvzBvypxCQ==}
+
 snapshots:
 
   '@types/node@22.8.7':
@@ -46,3 +52,7 @@ snapshots:
   typescript@5.6.3: {}
 
   undici-types@6.19.8: {}
+
+  verokv-ts@1.0.2:
+    dependencies:
+      net: 1.0.2
