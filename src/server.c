@@ -16,8 +16,8 @@
 #define FLUSH_INTERVAL 10 // Time in seconds for flushing batch file
 
 // Toggle variables for AOF and Batch processing
-int ENABLE_AOF = 0;  // 1 to enable AOF, 0 to disable
-int ENABLE_BATCH = 0; // 1 to enable Batch processing, 0 to disable
+int ENABLE_AOF = 1;  // 1 to enable AOF, 0 to disable
+int ENABLE_BATCH = 1; // 1 to enable Batch processing, 0 to disable
 
 typedef struct QueueNode {
     char *cmd;
