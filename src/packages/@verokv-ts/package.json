@@ -1,17 +1,22 @@
 {
   "name": "verokv-ts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "try": "pnpm exec tsc && node dist/usage.js"
   },
-  "keywords": ["verokv", "database"],
+  "keywords": [
+    "verokv",
+    "database"
+  ],
   "author": "harshsbhat",
   "license": "ISC",
   "dependencies": {
-    "net": "^1.0.2"
+    "net": "^1.0.2",
+    "verokv-ts": "^1.0.2"
   },
   "devDependencies": {
     "@types/node": "^22.8.7",
