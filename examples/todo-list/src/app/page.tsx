@@ -1,101 +1,113 @@
-import Image from "next/image";
+'use client';
+
+import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { CopyButton } from '@/components/ui/copy';
+import Link from 'next/link';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import AnimatedCount from '@/components/ui/animatedCount'; 
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [count, setCount] = useState<string | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+  useEffect(() => {
+    async function fetchCount() {
+      try {
+        const response = await fetch('/api/getCount');
+        const data = await response.json();
+        setCount(data.count);
+      } catch (error) {
+        console.error('Error fetching count:', error);
+      }
+    }
+
+    fetchCount();
+  }, []);
+
+  const encryptCommand = `
+curl -X POST http://localhost:3000/api/encrypt \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "data": "My name is Harsh",
+    "format": {
+      "name": {"type": "string"}
+    }
+  }'
+  `;
+
+  const decryptCommand = `
+curl -X POST http://localhost:3000/api/decrypt \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "data": "My name is Harsh.",
+    "format": {
+      "name": {"type": "string"}
+    }
+  }'
+  `;
+
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
+      <Button variant="outline" className="rounded-full mb-7 text-sm p-5 text-zinc-400">
+        <Link href="https://github.com/harshsbhat/ordox" passHref
             target="_blank"
             rel="noopener noreferrer"
+            className="text-zinc-400 hover:text-zinc-300"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            Star OrdoX on&nbsp;<span className="text-zinc-200">Github ⭐</span>
+        </Link>
+      </Button>
+      <h1 className="scroll-m-20 text-3xl md:text-4xl font-extrabold tracking-tight lg:text-6xl bg-gradient-to-b from-zinc-200 to-zinc-400 text-transparent bg-clip-text text-center">
+        Convert any data to JSON
+      </h1>
+      <p className="text-zinc-500 leading-7 [&:not(:first-child)]:mt-6 text-center">
+        Transform your data to clean JSON in just one click
+      </p>
+      <h2 className="relative mt-10 scroll-m-20 pb-2 text-2xl md:text-3xl font-bold tracking-tight transition-colors bg-gradient-to-b from-zinc-200 to-zinc-500 text-transparent bg-clip-text">
+        Requests converted to JSON
+      </h2>
+      <AnimatedCount count={count} />
+
+      <Tabs defaultValue="standard" className="w-full max-w-5xl mt-10">
+        <TabsList>
+          <TabsTrigger value="standard">Encrypt</TabsTrigger>
+          <TabsTrigger value="cheap">Decrypt</TabsTrigger>
+        </TabsList>
+        <TabsContent value="standard">
+          <div className="bg-zinc-900 text-zinc-400 p-6 rounded-lg relative overflow-auto">
+            <pre className="whitespace-pre-wrap break-words">
+              <code>{encryptCommand}</code>
+            </pre>
+            <CopyButton text={encryptCommand} />
+          </div>
+        </TabsContent>
+        <TabsContent value="decrypt">
+          <div className="bg-zinc-900 text-zinc-400 p-6 rounded-lg relative overflow-auto">
+            <pre className="whitespace-pre-wrap break-words">
+              <code>{decryptCommand}</code>
+            </pre>
+            <CopyButton text={decryptCommand} />
+          </div>
+        </TabsContent>
+      </Tabs>
+      <div className="mt-8 flex flex-col md:flex-row gap-3">
+        <Link href="/encrypt">
+      <Button className="font-bold p-6 rounded-l w-[250px]" type='button'>
+        Encrypt
+      </Button>
+      </Link>
+      <Link href="/decrypt">
+      <Button className="font-bold p-6 rounded-l w-[250px] bg-zinc-900 text-zinc-50 border border-zinc-700 hover:bg-zinc-700">
+        Decrypt
+      </Button>
+      </Link>
     </div>
+
+      <div className="flex flex-col md:flex-row justify-center mt-10 space-y-4 md:space-y-0 md:space-x-12">
+        <p className="text-zinc-400 font-medium text-lg">✅ Secret Sharing</p>
+        <p className="text-zinc-400 font-medium text-lg">✅ Encrypted Sharing</p>
+        <p className="text-zinc-400 font-medium text-lg">✅ Expiring Secrets ( SOON )</p>
+      </div>
+    </main>
   );
 }
